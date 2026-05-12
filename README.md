@@ -1,115 +1,763 @@
-# 𝗠𝗲𝘁𝘂𝗯𝗲 𝗫 — 𝗥𝗲𝗺𝗮𝘀𝘁𝗲𝗿𝗲𝗱
+# 𝐌𝐞𝐭𝐮𝐛𝐞 𝐗 — 𝐑𝐞𝐦𝐚𝐬𝐭𝐞𝐫𝐞𝐝
 
-[![Build Status](https://github.com/kobirshah/metube-x/actions/workflows/main.yml/badge.svg)](https://github.com/kobirshah/metube-x/actions)
+<div align="center">
+
+[![Build Status](https://github.com/kobirshah/metube-x/actions/workflows/main.yml/badge.svg)](https://github.com/kobirshah/metube-x/actions/workflows/main.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/kobirshah/metube-x.svg)](https://hub.docker.com/repository/docker/kobirshah/metube-x)
+[![Python Version](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/)
+[![Angular Version](https://img.shields.io/badge/angular-21-red.svg)](https://angular.io/)
+[![License](https://img.shields.io/github/license/kobirshah/metube-x.svg)](LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/kobirshah/metube-x.svg)](https://github.com/kobirshah/metube-x/commits/master)
+[![Contributors](https://img.shields.io/github/contributors/kobirshah/metube-x.svg)](https://github.com/kobirshah/metube-x/graphs/contributors)
 
-Metube X is a lightweight, self-hosted web UI for yt-dlp that makes downloading videos, audio, subtitles and thumbnails fast, configurable, and repeatable.
+</div>
 
-This repository contains the server (aiohttp + python-socketio) and the Angular frontend.
+---
 
-Key features
-- Modern web UI for yt-dlp with presets, per-download overrides and background queueing
-- Subscriptions (channel/playlist watches) with automatic enqueueing
-- Batch jobs, metadata extraction, thumbnail download/embedding and optional analysis hooks
-- Persistent JSON state with safe atomic writes
-- Built-in OpenAPI docs, metrics endpoint and CI-ready tests
+## 🚀 Overview
 
-Live demo / screenshots
+**Metube X** is a lightweight, self-hosted web interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp) that makes downloading videos, audio, subtitles, and thumbnails fast, configurable, and repeatable.
+
+Built with **Python 3.13+** (aiohttp + python-socketio) and **Angular 21**, Metube X provides a modern, real-time interface for managing your media downloads with support for subscriptions, batch processing, presets, and more.
+
+> 💡 **Metube X is a complete remaster of the original [metube](https://github.com/alexta69/metube) project**, rebuilt from the ground up with modern technologies, new features, and improved architecture.
+
+---
+
+## ✨ Key Features
+
+<div align="left">
+
+| Feature | Description |
+|---------|-------------|
+| 🎬 **Modern Web UI** | Clean, responsive Angular interface with real-time Socket.IO updates |
+| ⚡ **Download Queue** | Background queueing with concurrent download workers |
+| 📺 **Subscriptions** | Channel/playlist watching with automatic enqueueing |
+| 🎨 **Presets** | Pre-configured download templates (audio, video, custom) |
+| 🔄 **Per-Download Overrides** | Fine-tune options per-download with freeform yt-dlp options |
+| 📦 **Batch Jobs** | Process multiple URLs with job persistence and history |
+| 🖼️ **Thumbnails** | Download and embed thumbnails into media files |
+| 📝 **Metadata Extraction** | Extract and store video metadata (title, description, etc.) |
+| 🔍 **Search & Index** | Full-text search across downloaded content |
+| 📊 **Monitoring** | Built-in metrics endpoint (Prometheus-compatible) |
+| 📚 **OpenAPI Docs** | Auto-generated API documentation with Swagger UI |
+| 🔐 **API Security** | Optional API authentication and rate limiting |
+| 💾 **Persistent State** | Safe atomic JSON writes for state management |
+| 🐳 **Docker Ready** | Multi-arch support (amd64/arm64), production-optimized |
+| 🧪 **CI-Ready Tests** | Comprehensive pytest suite for quality assurance |
+
+</div>
+
+---
+
+## 📸 Live Demo
+
 ![screenshot](https://github.com/kobirshah/metube-x/raw/master/screenshot.gif)
 
-Quick Start — Docker (recommended)
-1. Create a downloads folder on the host, e.g. `C:\metube\downloads` or `/srv/metube/downloads`.
-2. Run:
+---
+
+## 🏁 Quick Start — Docker (Recommended)
+
+### Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) installed
+- A folder for downloads (e.g., `C:\metube\downloads` or `/srv/metube/downloads`)
+
+### Basic Run Command
 
 ```bash
 docker run -d \
   -p 8081:8081 \
   -v /path/to/downloads:/downloads \
-  -e PUID=1000 -e PGID=1000 \
-  ghcr.io/kobirshah/metubex:latest
+  -e PUID=1000 \
+  -e PGID=1000 \
+  ghcr.io/kobirshah/metube-x:latest
 ```
 
-Docker Compose example
+### Access the UI
+
+Open your browser and navigate to: **`http://localhost:8081`**
+
+---
+
+## 📋 Docker Compose Example
 
 ```yaml
 services:
   metube-x:
-    image: ghcr.io/kobirshah/metubex:latest
+    image: ghcr.io/kobirshah/metube-x:latest
     container_name: metube-x
     restart: unless-stopped
     ports:
       - "8081:8081"
     volumes:
-      - /path/to/downloads:/downloads
+      - ./downloads:/downloads
     environment:
       - PUID=1000
       - PGID=1000
       - LOGLEVEL=INFO
+      - MAX_CONCURRENT_DOWNLOADS=3
+      - DEFAULT_THEME=auto
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 ```
 
-Environment & configuration
-- `DOWNLOAD_DIR` — where files are stored (default `/downloads`)
-- `STATE_DIR` — where JSON state is stored (default `/downloads/.metube`)
-- `MAX_CONCURRENT_DOWNLOADS` — concurrent download workers (default `3`)
-- `YTDL_OPTIONS`, `YTDL_OPTIONS_FILE` — global yt-dlp options (JSON)
-- `YTDL_OPTIONS_PRESETS`, `YTDL_OPTIONS_PRESETS_FILE` — named presets
-- `ALLOW_YTDL_OPTIONS_OVERRIDES` — enable per-download freeform options (disabled by default)
-- `CORS_ALLOWED_ORIGINS` — for browser extensions/bookmarklets
+---
 
-See the `Configuration` section in the UI or the `app/main.py` `Config` class for a full list of options.
+## ⚙️ Environment Variables
 
-Presets and yt-dlp Options
-Metube X supports three layers of yt-dlp configuration:
-1. Global options (`YTDL_OPTIONS` / `YTDL_OPTIONS_FILE`)
-2. Named presets (`YTDL_OPTIONS_PRESETS` / `YTDL_OPTIONS_PRESETS_FILE`)
-3. Per-download overrides (enabled via `ALLOW_YTDL_OPTIONS_OVERRIDES`)
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DOWNLOAD_DIR` | `/downloads` | Primary download directory |
+| `AUDIO_DOWNLOAD_DIR` | `%%DOWNLOAD_DIR` | Separate audio downloads directory |
+| `TEMP_DIR` | `%%DOWNLOAD_DIR` | Temporary file storage |
+| `STATE_DIR` | `/downloads/.metube` | JSON state storage location |
+| `HOST` | `0.0.0.0` | Server binding host |
+| `PORT` | `8081` | Server binding port |
+| `MAX_CONCURRENT_DOWNLOADS` | `3` | Number of parallel download workers |
+| `LOGLEVEL` | `INFO` | Logging level (DEBUG, INFO, WARNING, ERROR) |
+| `DEFAULT_THEME` | `auto` | UI theme (auto, light, dark) |
+| `CORS_ALLOWED_ORIGINS` | *(empty)* | Comma-separated CORS origins |
+| `ENABLE_ACCESSLOG` | `false` | Enable HTTP access logging |
+| `ENABLE_JSON_LOGGING` | `false` | Enable structured JSON logging |
 
-The layers are merged in the order above; more specific layers override earlier ones.
+### yt-dlp Configuration
 
-Developer / Local Build
-Prerequisites: Node.js 22+, Python 3.13+, `uv` (Astral)
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `YTDL_OPTIONS` | `{}` | Global yt-dlp options (JSON string) |
+| `YTDL_OPTIONS_FILE` | *(empty)* | Path to JSON file with global options |
+| `YTDL_OPTIONS_PRESETS` | `{}` | Named presets (JSON object) |
+| `YTDL_OPTIONS_PRESETS_FILE` | *(empty)* | Path to presets JSON file |
+| `ALLOW_YTDL_OPTIONS_OVERRIDES` | `false` | Enable per-download freeform options |
+
+### API Security (Optional)
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ENABLE_API_AUTH` | `false` | Require API key authentication |
+| `API_KEY` | *(empty)* | Secret API key for access |
+| `ENABLE_RATE_LIMIT` | `false` | Enable rate limiting |
+| `RATE_LIMIT_PER_MINUTE` | `60` | Requests allowed per minute |
+
+### Subscription Settings
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SUBSCRIPTION_DEFAULT_CHECK_INTERVAL` | `60` | Minutes between subscription checks |
+| `SUBSCRIPTION_SCAN_PLAYLIST_END` | `50` | Number of playlist items to scan |
+| `SUBSCRIPTION_MAX_SEEN_IDS` | `50000` | Maximum video IDs to track per subscription |
+
+---
+
+## 🎨 Presets and yt-dlp Options
+
+Metube X supports **three layers** of yt-dlp configuration, applied in order:
+
+```
+Global Options → Named Presets → Per-Download Overrides
+```
+
+### 1. Global Options (`YTDL_OPTIONS`)
+Base configuration applied to all downloads.
+
+```json
+{
+  "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+  "embed-thumbnail": true,
+  "add-metadata": true
+}
+```
+
+### 2. Named Presets (`YTDL_OPTIONS_PRESETS`)
+Pre-defined configurations selectable in the UI.
+
+```json
+{
+  "audio-mp3": {
+    "format": "bestaudio/best",
+    "extractor-args": "youtube:player_client=android",
+    "postprocessors": [{
+      "key": "FFmpegExtractAudio",
+      "preferredcodec": "mp3",
+      "preferredquality": "192"
+    }]
+  },
+  "video-1080p": {
+    "format": "bestvideo[height<=1080]+bestaudio/best[height<=1080]",
+    "output-template": "%(title)s_1080p.%(ext)s"
+  },
+  "audio-64k": {
+    "format": "bestaudio/best",
+    "postprocessors": [{
+      "key": "FFmpegExtractAudio",
+      "preferredcodec": "mp3",
+      "preferredquality": "64"
+    }]
+  }
+}
+```
+
+### 3. Per-Download Overrides
+Enabled via `ALLOW_YTDL_OPTIONS_OVERRIDES=true`. Allows freeform JSON overrides per download.
+
+> ⚠️ **Security Note**: Only enable overrides if you trust users, as they can pass arbitrary yt-dlp arguments.
+
+---
+
+## 🛠️ Developer / Local Build
+
+### Prerequisites
+
+- **Node.js** 22+
+- **Python** 3.13+
+- **[uv](https://astral.sh/uv/)** (Astral's fast Python package manager)
+- **[pnpm](https://pnpm.io/)** (recommended) or npm
+
+### Step-by-Step
 
 ```bash
-# build frontend
+# 1. Clone the repository
+git clone https://github.com/kobirshah/metube-x.git
+cd metube-x
+
+# 2. Build the frontend
 cd ui
 pnpm install --frozen-lockfile
 pnpm run build
-
-# install python deps and run server
 cd ..
-curl -LsSf https://astral.sh/uv/install.sh | sh
-uv sync
+
+# 3. Install Python dependencies
+uv sync --frozen --group dev
+
+# 4. Run the server
 uv run python3 app/main.py
 ```
 
-CI and Tests
-Run the project's pytest suite from the repo root (uses `uv`):
+### Access the Application
+
+Open **`http://localhost:8081`** in your browser.
+
+---
+
+## 🧪 CI and Tests
+
+Run the complete pytest suite from the repo root:
 
 ```bash
+# Using uv (recommended)
 uv run pytest -q
+
+# Or with coverage report
+uv run pytest --cov=app --cov-report=term-missing
 ```
 
-Troubleshooting
-- If embedding thumbnails or postprocessing fails, ensure `ffmpeg` is available in the container or host PATH.
-- If Docker build fails due to `uv.lock`/workspace mismatch, update `uv.lock` locally with `uv lock` and commit the change before building.
+### Test Categories
 
-Contributing
-- Open issues for discussion before implementing large features.
-- Please keep PRs focused and add tests when applicable.
+- **API Tests**: REST endpoint validation
+- **Download Queue**: Queue management and persistence
+- **Subscriptions**: Channel/playlist watching logic
+- **State Store**: Atomic JSON operations
+- **Configuration**: Environment variable parsing
 
-License
-This project is provided under the terms in `LICENSE`.
+---
 
-𝐂𝐫𝐞𝐝𝐢𝐭𝐬
-- Original project and codebase by: Alexta69 Bro — original repo: https://github.com/alexta69/metube
-- Remastered / updated by: @MohammadKobirShah
-- Package / container: https://github.com/users/MohammadKobirShah/packages/container/package/metubex
+## 📖 API Documentation
 
-Acknowledgements
-- Built on top of `yt-dlp`, `aiohttp`, `python-socketio` and Angular.
+Metube X provides a **versioned REST API** (`/api/v1/`) with full OpenAPI 3.0 spec support. A interactive Swagger UI is available at `/api/v1/docs/ui`.
 
-Contact
-- File issues or PRs on the repository. For packaged container images, see the package page linked above.
+### Base URL
+```
+http://localhost:8081/api/v1
+```
 
-Enjoy — and thanks to all contributors who helped refine the UX and robustness of this project.
+### Authentication (Optional)
 
+If `ENABLE_API_AUTH=true`, include your API key in requests:
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" http://localhost:8081/api/v1/downloads
+```
+
+---
+
+### Endpoints Overview
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| **GET** | `/health` | Health check endpoint |
+| **GET** | `/version` | Get service version info |
+| **GET** | `/downloads` | List all downloads (queue, pending, done) |
+| **POST** | `/downloads/add` | Add a new download |
+| **POST** | `/downloads/add-batch` | Add multiple downloads |
+| **GET** | `/downloads/{id}` | Get download status by ID |
+| **POST** | `/downloads/{id}/start` | Start a pending download |
+| **GET** | `/presets/audio` | List audio presets |
+| **POST** | `/presets/audio` | Create/update audio preset |
+| **GET** | `/presets/video` | List video presets |
+| **POST** | `/subscriptions` | Create new subscription |
+| **GET** | `/subscriptions` | List all subscriptions |
+| **GET** | `/metadata/extract?url=...` | Extract metadata from URL |
+| **POST** | `/thumbnails/generate` | Generate thumbnail from video |
+| **GET** | `/search?q=...` | Full-text search |
+| **POST** | `/jobs/batch-add` | Submit batch job |
+| **POST** | `/analysis/transcribe` | Queue transcription |
+| **GET** | `/metrics` | Prometheus-compatible metrics |
+
+---
+
+### Detailed Endpoint Reference
+
+#### 1. Health Check
+```http
+GET /api/v1/health
+```
+**Response:**
+```json
+{ "status": "ok" }
+```
+
+#### 2. Version Info
+```http
+GET /api/v1/version
+```
+**Response:**
+```json
+{
+  "version": "1.0.0",
+  "yt-dlp": "2024.12.23"
+}
+```
+
+#### 3. List Downloads
+```http
+GET /api/v1/downloads?page=1
+```
+**Response:**
+```json
+{
+  "queue": [
+    {
+      "id": "abc123",
+      "title": "Sample Video",
+      "status": "downloading",
+      "filename": "Sample Video.mp4",
+      "size": 52428800
+    }
+  ],
+  "pending": [],
+  "done": []
+}
+```
+
+#### 4. Add Download
+```http
+POST /api/v1/downloads/add
+Content-Type: application/json
+```
+**Request Body:**
+```json
+{
+  "url": "https://youtube.com/watch?v=...",
+  "download_type": "video",
+  "quality": "1080p",
+  "codec": "mp4",
+  "folder": "videos",
+  "auto_start": true
+}
+```
+**Response:**
+```json
+{
+  "status": "ok",
+  "msg": "Added to queue"
+}
+```
+
+#### 5. Add Batch Downloads
+```http
+POST /api/v1/downloads/add-batch
+Content-Type: application/json
+```
+**Request Body:**
+```json
+{
+  "items": [
+    { "url": "https://youtube.com/watch?v=1", "download_type": "video", "quality": "720p" },
+    { "url": "https://youtube.com/watch?v=2", "download_type": "audio", "codec": "mp3" }
+  ]
+}
+```
+**Response:**
+```json
+{ "status": "accepted" }
+```
+
+#### 6. Get Download by ID
+```http
+GET /api/v1/downloads/{id}
+```
+**Response:**
+```json
+{
+  "id": "abc123",
+  "title": "Sample Video",
+  "status": "completed",
+  "filename": "Sample Video.mp4",
+  "size": 104857600
+}
+```
+
+#### 7. Start Pending Download
+```http
+POST /api/v1/downloads/{id}/start
+```
+**Response:**
+```json
+{ "status": "started" }
+```
+
+#### 8. List Audio Presets
+```http
+GET /api/v1/presets/audio
+```
+**Response:**
+```json
+[
+  {
+    "name": "audio-mp3-192",
+    "bitrate_kbps": 192,
+    "description": "MP3 192kbps"
+  },
+  {
+    "name": "audio-64k",
+    "bitrate_kbps": 64,
+    "description": "Low quality 64kbps"
+  }
+]
+```
+
+#### 9. Create Audio Preset
+```http
+POST /api/v1/presets/audio
+Content-Type: application/json
+```
+**Request Body:**
+```json
+{
+  "name": "custom-audio",
+  "bitrate_kbps": 256,
+  "description": "Custom 256kbps preset"
+}
+```
+
+#### 10. List Video Presets
+```http
+GET /api/v1/presets/video
+```
+**Response:**
+```json
+[
+  {
+    "name": "video-1080p",
+    "resolution": "1920x1080",
+    "description": "Full HD 1080p"
+  },
+  {
+    "name": "video-4k",
+    "resolution": "3840x2160",
+    "description": "Ultra HD 4K"
+  }
+]
+```
+
+#### 11. Create Subscription
+```http
+POST /api/v1/subscriptions
+Content-Type: application/json
+```
+**Request Body:**
+```json
+{
+  "url": "https://youtube.com/channel/...",
+  "check_interval_minutes": 60
+}
+```
+**Response:**
+```json
+{ "status": "created", "id": "sub_abc123" }
+```
+
+#### 12. List Subscriptions
+```http
+GET /api/v1/subscriptions
+```
+**Response:**
+```json
+[
+  {
+    "id": "sub_abc123",
+    "url": "https://youtube.com/channel/...",
+    "check_interval_minutes": 60,
+    "last_check": "2024-12-23T10:30:00Z",
+    "videos_found": 5
+  }
+]
+```
+
+#### 13. Extract Metadata
+```http
+GET /api/v1/metadata/extract?url=https://youtube.com/watch?v=...
+```
+**Response:**
+```json
+{
+  "title": "Sample Video Title",
+  "description": "Video description here...",
+  "tags": ["tutorial", "python", "coding"],
+  "upload_date": "2024-12-01",
+  "duration": 1200,
+  "uploader": "Channel Name"
+}
+```
+
+#### 14. Generate Thumbnail
+```http
+POST /api/v1/thumbnails/generate
+Content-Type: application/json
+```
+**Request Body:**
+```json
+{
+  "url": "https://youtube.com/watch?v=...",
+  "timestamp": 30.5
+}
+```
+**Response:**
+```json
+{
+  "status": "generated",
+  "thumbnail_url": "/thumbnails/abc123.jpg"
+}
+```
+
+#### 15. Search Content
+```http
+GET /api/v1/search?q=tutorial
+```
+**Response:**
+```json
+{
+  "total": 10,
+  "items": [
+    {
+      "id": "abc123",
+      "title": "Python Tutorial",
+      "status": "completed",
+      "filename": "Python Tutorial.mp4",
+      "size": 52428800
+    }
+  ]
+}
+```
+
+#### 16. Batch Job Submit
+```http
+POST /api/v1/jobs/batch-add
+Content-Type: application/json
+```
+**Request Body:**
+```json
+{
+  "items": [
+    { "url": "...", "download_type": "video" },
+    { "url": "...", "download_type": "audio" }
+  ]
+}
+```
+**Response:**
+```json
+{
+  "job_id": "job_xyz789",
+  "status": "queued"
+}
+```
+
+#### 17. Queue Transcription
+```http
+POST /api/v1/analysis/transcribe
+Content-Type: application/json
+```
+**Request Body:**
+```json
+{
+  "url": "https://youtube.com/watch?v=..."
+}
+```
+**Response:**
+```json
+{
+  "status": "transcription_queued",
+  "job_id": "trans_abc123"
+}
+```
+
+#### 18. Metrics (Prometheus)
+```http
+GET /api/v1/metrics
+```
+**Response (Prometheus format):**
+```
+# HELP metube_downloads_total Total downloads
+# TYPE metube_downloads_total counter
+metube_downloads_total 1234
+
+# HELP metube_queue_size Current queue size
+# TYPE metube_queue_size gauge
+metube_queue_size 5
+```
+
+---
+
+### API Versioning
+
+Metube X supports API versioning via the URL path:
+- `v1` — Current stable API
+
+Configure allowed versions with `SUPPORTED_API_VERSIONS` environment variable.
+
+---
+
+### Rate Limiting (Optional)
+
+When `ENABLE_RATE_LIMIT=true`, API requests are limited to `RATE_LIMIT_PER_MINUTE` (default: 60) requests per minute per IP.
+
+**Rate Limited Response:**
+```json
+{
+  "error": "Rate limit exceeded",
+  "retry_after": 30
+}
+```
+
+---
+
+### OpenAPI Swagger UI
+
+Interactive API documentation is available at:
+```
+http://localhost:8081/api/v1/docs/ui
+```
+
+Raw OpenAPI spec:
+```
+http://localhost:8081/api/v1/docs/openapi.yaml
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| Thumbnail embedding fails | Ensure `ffmpeg` is available in the container PATH |
+| Docker build fails | Run `uv lock` locally and commit changes |
+| Downloads not starting | Check `MAX_CONCURRENT_DOWNLOADS` setting |
+| Subscription not working | Verify `SUBSCRIPTION_DEFAULT_CHECK_INTERVAL` |
+| API returns 401 | Enable `ENABLE_API_AUTH` and set `API_KEY` |
+| CORS errors | Configure `CORS_ALLOWED_ORIGINS` with your domain |
+
+### Logs
+
+View container logs:
+```bash
+docker logs metube-x
+```
+
+Enable debug logging:
+```bash
+docker run -e LOGLEVEL=DEBUG ...
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. **Open an issue** for discussion before implementing large features
+2. **Keep PRs focused** — one feature or fix per pull request
+3. **Add tests** when applicable — the project targets 100% test coverage
+4. **Follow code style** — 4-space indentation for Python, 2-space for TypeScript
+5. **Update documentation** for any user-facing changes
+
+### Quick Development Loop
+
+```bash
+# Frontend with hot reload
+cd ui && pnpm run start
+
+# Backend with auto-reload
+uv run --watch app/main.py
+```
+
+---
+
+## 📄 License
+
+This project is provided under the terms in [LICENSE](LICENSE).
+
+---
+
+## 💎 Credits
+
+### Original Project
+- **Alexta69** — Creator of the original [metube](https://github.com/alexta69/metube)
+
+### Remastered & Maintained By
+- **[@MohammadKobirShah](https://github.com/MohammadKobirShah)**
+
+### Package & Container
+- GitHub Container Registry: `ghcr.io/kobirshah/metube-x`
+- Docker Hub: [metube-x](https://hub.docker.com/r/kobirshah/metube-x)
+
+### Technology Stack
+
+| Layer | Technology |
+|-------|-------------|
+| Backend | Python 3.13+, aiohttp, python-socketio 5.x |
+| Frontend | Angular 21, TypeScript, Bootstrap 5, SASS |
+| Download Engine | yt-dlp |
+| State | Atomic JSON (json-based persistence) |
+| Container | Multi-stage Docker, multi-arch (amd64/arm64) |
+
+### Acknowledgements
+
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) — Powerful media downloader
+- [aiohttp](https://docs.aiohttp.org/) — Async HTTP server/client
+- [python-socketio](https://python-socketio.readthedocs.io/) — Real-time communication
+- [Angular](https://angular.io/) — Modern web framework
+
+---
+
+## 📬 Contact & Support
+
+| Method | Link |
+|--------|------|
+| 🐛 **Bug Reports** | [GitHub Issues](https://github.com/kobirshah/metube-x/issues) |
+| 💡 **Feature Requests** | [GitHub Issues](https://github.com/kobirshah/metube-x/issues) |
+| 💬 **Discussions** | [GitHub Discussions](https://github.com/kobirshah/metube-x/discussions) |
+| 🐙 **Source Code** | [GitHub Repository](https://github.com/kobirshah/metube-x) |
+
+---
+
+<div align="center">
+
+**⭐ If you find Metube X useful, please consider giving it a star!**
+
+_Made with ❤️ by the community, for the community._
+
+</div>
