@@ -27,37 +27,42 @@ def register_routes(app, config, dqueue, submgr, serializer, sio, parse_download
             "version": os.getenv("METUBE_VERSION", "dev"),
         })
 
-        @routes.get('/api/v1/docs/openapi.yaml')
-        async def openapi_yaml(request):
-                path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs', 'openapi_v1.yaml')
-                if not os.path.exists(path):
-                        raise web.HTTPNotFound()
-                with open(path, encoding='utf-8') as f:
-                        content = f.read()
-                return web.Response(text=content, content_type='application/x-yaml')
+    @routes.get('/api/v1/docs/openapi.yaml')
+    async def openapi_yaml(request):
+        path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs', 'openapi_v1.yaml')
+        if not os.path.exists(path):
+            raise web.HTTPNotFound()
+        with open(path, encoding='utf-8') as f:
+            content = f.read()
+        return web.Response(text=content, content_type='application/x-yaml')
 
-        @routes.get('/api/v1/docs/ui')
-        async def docs_ui(request):
-                # Lightweight Swagger UI page that points to /api/v1/docs/openapi.yaml
-                html = '''<!doctype html>
+    @routes.get('/api/v1/docs/ui')
+    async def docs_ui(request):
+        html = '''<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Metube API Docs</title>
-        <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@4/swagger-ui.css" />
-    </head>
-    <body>
-        <div id="swagger-ui"></div>
-        <script src="https://unpkg.com/swagger-ui-dist@4/swagger-ui-bundle.js"></script>
-        <script>
-            window.ui = SwaggerUIBundle({
-                url: '/api/v1/docs/openapi.yaml',
-                dom_id: '#swagger-ui',
-            });
-        </script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>MeTube API Docs</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+    <style>
+        body { margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+        window.ui = SwaggerUIBundle({
+            url: '/api/v1/docs/openapi.yaml',
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            showExtensions: true,
+            showCommonExtensions: true,
+        });
+    </script>
+</body>
 </html>'''
-                return web.Response(text=html, content_type='text/html')
+        return web.Response(text=html, content_type='text/html')
 
     @routes.post('/api/v1/downloads/add')
     async def add(request):
