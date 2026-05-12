@@ -1,14 +1,43 @@
-# 𝐌𝐞𝐭𝐮𝐛𝐞 𝐗 — 𝐑𝐞𝐦𝐚𝐬𝐭𝐞𝐫𝐞𝐝
+# <img src="https://raw.githubusercontent.com/MohammadKobirShah/MeTubeX/refs/heads/master/ui/src/assets/icons/favicon-32x32.png" width="32"> MeTube X — Remastered
 
 <div align="center">
 
-[![Build Status](https://github.com/kobirshah/metube-x/actions/workflows/main.yml/badge.svg)](https://github.com/kobirshah/metube-x/actions/workflows/main.yml)
-[![Docker Pulls](https://img.shields.io/docker/pulls/kobirshah/metube-x.svg)](https://hub.docker.com/repository/docker/kobirshah/metube-x)
-[![Python Version](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/)
-[![Angular Version](https://img.shields.io/badge/angular-21-red.svg)](https://angular.io/)
-[![License](https://img.shields.io/github/license/kobirshah/metube-x.svg)](LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/kobirshah/metube-x.svg)](https://github.com/kobirshah/metube-x/commits/master)
-[![Contributors](https://img.shields.io/github/contributors/kobirshah/metube-x.svg)](https://github.com/kobirshah/metube-x/graphs/contributors)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:1e3a8a,100:3b82f6&height=300&section=header&text=MeTube%20X&fontSize=80&animation=fadeIn&fontAlignY=35&desc=Self-Hosted%20Media%20Downloader&descAlignY=55&descSize=30">
+  <source media="(prefers-color-scheme: light)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:bfdbfe,100:3b82f6&height=300&section=header&text=MeTube%20X&fontSize=80&animation=fadeIn&fontAlignY=35&desc=Self-Hosted%20Media%20Downloader&descAlignY=55&descSize=30">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:3b82f6,100:8b5cf6&height=300&section=header&text=MeTube%20X&fontSize=80&animation=fadeIn&fontAlignY=35&desc=Self-Hosted%20Media%20Downloader&descAlignY=55&descSize=30">
+</picture>
+
+<br><br>
+
+[![Build Status](https://github.com/MohammadKobirShah/MeTubeX/actions/workflows/main.yml/badge.svg)](https://github.com/MohammadKobirShah/MeTubeX/actions/workflows/main.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/mohammadkobirshah/metubex?logo=docker&style=flat)](https://hub.docker.com/r/mohammadkobirshah/metubex)
+[![Python Version](https://img.shields.io/badge/python-3.13+-3776AB?logo=python&style=flat)](https://www.python.org/)
+[![Angular Version](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&style=flat)](https://angular.io/)
+[![License](https://img.shields.io/github/license/MohammadKobirShah/MeTubeX?color=green&style=flat)](LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/MohammadKobirShah/MeTubeX?color=orange&style=flat)](https://github.com/MohammadKobirShah/MeTubeX/commits/master)
+[![Contributors](https://img.shields.io/github/contributors/MohammadKobirShah/MeTubeX?color=purple&style=flat)](https://github.com/MohammadKobirShah/MeTubeX/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/MohammadKobirShah/MeTubeX?color=yellow&style=flat)](https://github.com/MohammadKobirShah/MeTubeX/stargazers)
+[![Forks](https://img.shields.io/github/forks/MohammadKobirShah/MeTubeX?color=teal&style=flat)](https://github.com/MohammadKobirShah/MeTubeX/network/members)
+
+[![Docker Image Size](https://img.shields.io/docker/image-size/mohammadkobirshah/metubex?logo=docker&style=flat)](https://hub.docker.com/r/mohammadkobirshah/metubex)
+[![PyPI Version](https://img.shields.io/pypi/v/metube-x?logo=pypi&style=flat)](https://pypi.org/project/metube-x/)
+[![Code Quality](https://img.shields.io/codefactor/grade/github/MohammadKobirShah/MeTubeX?logo=codefactor&style=flat)](https://www.codefactor.io/repository/github/MohammadKobirShah/MeTubeX)
+
+<br>
+
+<table>
+  <tr>
+    <td><a href="https://github.com/MohammadKobirShah/MeTubeX/stargazers"><img src="https://gp-libs.web.app/stars.gif" width="150"></a></td>
+    <td><a href="https://github.com/MohammadKobirShah/MeTubeX"><img src="https://komarev.com/ghpvc/?username=MohammadKobirShah&label=Project%20Views&color=0e75fe&style=flat" alt="project views"></a></td>
+  </tr>
+</table>
+
+---
+
+**🌐 [Website](https://github.com/MohammadKobirShah/MeTubeX)** • **📖 [Documentation](https://github.com/MohammadKobirShah/MeTubeX#readme)** • **🐛 [Report Bug](https://github.com/MohammadKobirShah/MeTubeX/issues)** • **💡 [Request Feature](https://github.com/MohammadKobirShah/MeTubeX/issues)**
+
+---
 
 </div>
 
@@ -16,11 +45,19 @@
 
 ## 🚀 Overview
 
-**Metube X** is a lightweight, self-hosted web interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp) that makes downloading videos, audio, subtitles, and thumbnails fast, configurable, and repeatable.
+<p align="center">
+  <img src="https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/-Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" />
+  <img src="https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img src="https://img.shields.io/badge/-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/-yt--dlp-FF0000?style=for-the-badge&logoColor=white" />
+</p>
 
-Built with **Python 3.13+** (aiohttp + python-socketio) and **Angular 21**, Metube X provides a modern, real-time interface for managing your media downloads with support for subscriptions, batch processing, presets, and more.
+**MeTube X** is a lightweight, self-hosted web interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp) that makes downloading videos, audio, subtitles, and thumbnails fast, configurable, and repeatable.
 
-> 💡 **Metube X is a complete remaster of the original [metube](https://github.com/alexta69/metube) project**, rebuilt from the ground up with modern technologies, new features, and improved architecture.
+Built with **Python 3.13+** (aiohttp + python-socketio) and **Angular 21**, MeTube X provides a modern, real-time interface for managing your media downloads with support for subscriptions, batch processing, presets, and more.
+
+> 💡 **MeTube X is a complete remaster of the original [metube](https://github.com/alexta69/metube) project**, rebuilt from the ground up with modern technologies, new features, and improved architecture.
 
 ---
 
@@ -52,7 +89,7 @@ Built with **Python 3.13+** (aiohttp + python-socketio) and **Angular 21**, Metu
 
 ## 📸 Live Demo
 
-![screenshot](https://github.com/kobirshah/metube-x/raw/master/screenshot.gif)
+![screenshot](https://github.com/MohammadKobirShah/MeTubeX/raw/master/screenshot.gif)
 
 ---
 
@@ -70,7 +107,7 @@ docker run -d \
   -v /path/to/downloads:/downloads \
   -e PUID=1000 \
   -e PGID=1000 \
-  ghcr.io/kobirshah/metube-x:latest
+  ghcr.io/mohammadkobirshah/metubex:latest
 ```
 
 ### Access the UI
@@ -84,7 +121,7 @@ Open your browser and navigate to: **`http://localhost:8081`**
 ```yaml
 services:
   metube-x:
-    image: ghcr.io/kobirshah/metube-x:latest
+    image: ghcr.io/mohammadkobirshah/metubex:latest
     container_name: metube-x
     restart: unless-stopped
     ports:
@@ -154,7 +191,7 @@ services:
 
 ## 🎨 Presets and yt-dlp Options
 
-Metube X supports **three layers** of yt-dlp configuration, applied in order:
+MeTube X supports **three layers** of yt-dlp configuration, applied in order:
 
 ```
 Global Options → Named Presets → Per-Download Overrides
@@ -220,8 +257,8 @@ Enabled via `ALLOW_YTDL_OPTIONS_OVERRIDES=true`. Allows freeform JSON overrides 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/kobirshah/metube-x.git
-cd metube-x
+git clone https://github.com/MohammadKobirShah/MeTubeX.git
+cd MeTubeX
 
 # 2. Build the frontend
 cd ui
@@ -266,7 +303,7 @@ uv run pytest --cov=app --cov-report=term-missing
 
 ## 📖 API Documentation
 
-Metube X provides a **versioned REST API** (`/api/v1/`) with full OpenAPI 3.0 spec support. A interactive Swagger UI is available at `/api/v1/docs/ui`.
+MeTube X provides a **versioned REST API** (`/api/v1/`) with full OpenAPI 3.0 spec support. An interactive Swagger UI is available at `/api/v1/docs/ui`.
 
 ### Base URL
 ```
@@ -622,7 +659,7 @@ metube_queue_size 5
 
 ### API Versioning
 
-Metube X supports API versioning via the URL path:
+MeTube X supports API versioning via the URL path:
 - `v1` — Current stable API
 
 Configure allowed versions with `SUPPORTED_API_VERSIONS` environment variable.
@@ -686,6 +723,15 @@ docker run -e LOGLEVEL=DEBUG ...
 
 ## 🤝 Contributing
 
+<p align="center">
+  <a href="https://github.com/MohammadKobirShah/MeTubeX/issues">
+    <img src="https://img.shields.io/badge/Contributions-Welcome-orange?style=for-the-badge" alt="Contributions Welcome">
+  </a>
+  <a href="https://github.com/MohammadKobirShah/MeTubeX/blob/master/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/Read-Contributing%20Guide-blue?style=for-the-badge" alt="Contributing Guide">
+  </a>
+</p>
+
 Contributions are welcome! Please follow these guidelines:
 
 1. **Open an issue** for discussion before implementing large features
@@ -721,8 +767,8 @@ This project is provided under the terms in [LICENSE](LICENSE).
 - **[@MohammadKobirShah](https://github.com/MohammadKobirShah)**
 
 ### Package & Container
-- GitHub Container Registry: `ghcr.io/kobirshah/metube-x`
-- Docker Hub: [metube-x](https://hub.docker.com/r/kobirshah/metube-x)
+- GitHub Container Registry: `ghcr.io/mohammadkobirshah/metubex`
+- Docker Hub: [metubex](https://hub.docker.com/r/mohammadkobirshah/metubex)
 
 ### Technology Stack
 
@@ -747,17 +793,23 @@ This project is provided under the terms in [LICENSE](LICENSE).
 
 | Method | Link |
 |--------|------|
-| 🐛 **Bug Reports** | [GitHub Issues](https://github.com/kobirshah/metube-x/issues) |
-| 💡 **Feature Requests** | [GitHub Issues](https://github.com/kobirshah/metube-x/issues) |
-| 💬 **Discussions** | [GitHub Discussions](https://github.com/kobirshah/metube-x/discussions) |
-| 🐙 **Source Code** | [GitHub Repository](https://github.com/kobirshah/metube-x) |
+| 🐛 **Bug Reports** | [GitHub Issues](https://github.com/MohammadKobirShah/MeTubeX/issues) |
+| 💡 **Feature Requests** | [GitHub Issues](https://github.com/MohammadKobirShah/MeTubeX/issues) |
+| 💬 **Discussions** | [GitHub Discussions](https://github.com/MohammadKobirShah/MeTubeX/discussions) |
+| 🐙 **Source Code** | [GitHub Repository](https://github.com/MohammadKobirShah/MeTubeX) |
 
 ---
 
 <div align="center">
 
-**⭐ If you find Metube X useful, please consider giving it a star!**
+### ⭐ Please Star This Project! ⭐
+
+![Star Badge](https://img.shields.io/github/stars/MohammadKobirShah/MeTubeX?style=for-the-badge&label=Stars&color=yellow)
 
 _Made with ❤️ by the community, for the community._
+
+---
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=footer" alt="footer wave">
 
 </div>
