@@ -1,0 +1,419 @@
+openapi: 3.0.3
+info:
+  title: Metube API
+  version: 1.0.0
+  description: Metube API v1 (generated OpenAPI v3 surface for expansion)
+servers:
+  - url: http://localhost:8081/
+    description: Local dev server
+tags:
+  - name: downloads
+  - name: presets
+  - name: subscriptions
+  - name: metadata
+  - name: thumbnails
+  - name: search
+  - name: jobs
+  - name: analysis
+  - name: admin
+paths:
+  /api/v1/version:
+    get:
+      tags: [admin]
+      summary: Service version
+      responses:
+        '200':
+          description: Versions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Version'
+
+  /api/v1/downloads/add:
+    post:
+      tags: [downloads]
+      summary: Add a download
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadRequest'
+      responses:
+        '200':
+          description: Add result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddResult'
+
+  /api/v1/downloads/add-batch:
+    post:
+      tags: [downloads]
+      summary: Add multiple downloads in a single request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/DownloadRequest'
+      responses:
+        '200':
+          description: Batch accepted
+
+  /api/v1/downloads:
+    get:
+      tags: [downloads]
+      summary: List queue, pending, and completed downloads
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Queue listing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadList'
+
+  /api/v1/downloads/{id}:
+    get:
+      tags: [downloads]
+      summary: Get download status and metadata
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Download info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadInfo'
+
+  /api/v1/downloads/{id}/start:
+    post:
+      tags: [downloads]
+      summary: Start pending download
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Start result
+
+  /api/v1/presets/audio:
+    get:
+      tags: [presets]
+      summary: List audio presets
+      responses:
+        '200':
+          description: Audio presets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AudioPreset'
+    post:
+      tags: [presets]
+      summary: Create or update an audio preset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AudioPreset'
+      responses:
+        '201':
+          description: Created
+
+  /api/v1/presets/video:
+    get:
+      tags: [presets]
+      summary: List video presets
+      responses:
+        '200':
+          description: Video presets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoPreset'
+
+  /api/v1/subscriptions:
+    post:
+      tags: [subscriptions]
+      summary: Create subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionCreate'
+      responses:
+        '200':
+          description: Subscription created
+    get:
+      tags: [subscriptions]
+      summary: List subscriptions
+      responses:
+        '200':
+          description: Subscriptions list
+
+  /api/v1/metadata/extract:
+    get:
+      tags: [metadata]
+      summary: Extract metadata from a URL
+      parameters:
+        - name: url
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Extracted metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+
+  /api/v1/thumbnails/generate:
+    post:
+      tags: [thumbnails]
+      summary: Generate thumbnail from video
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                timestamp:
+                  type: number
+      responses:
+        '200':
+          description: Thumbnail generated
+
+  /api/v1/search:
+    get:
+      tags: [search]
+      summary: Search content
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+
+  /api/v1/jobs/batch-add:
+    post:
+      tags: [jobs]
+      summary: Submit batch add job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/DownloadRequest'
+      responses:
+        '202':
+          description: Job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+
+  /api/v1/analysis/transcribe:
+    post:
+      tags: [analysis]
+      summary: Transcribe media to text
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                url:
+                  type: string
+      responses:
+        '200':
+          description: Transcription queued
+
+  /api/v1/health:
+    get:
+      tags: [admin]
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+
+components:
+  schemas:
+    Version:
+      type: object
+      properties:
+        yt-dlp:
+          type: string
+        version:
+          type: string
+
+    DownloadRequest:
+      type: object
+      required: [url, download_type, quality]
+      properties:
+        url:
+          type: string
+        download_type:
+          type: string
+          enum: [video, audio, captions, thumbnail]
+        codec:
+          type: string
+        format:
+          type: string
+        quality:
+          type: string
+        folder:
+          type: string
+        custom_name_prefix:
+          type: string
+        playlist_item_limit:
+          type: integer
+        auto_start:
+          type: boolean
+
+    AddResult:
+      type: object
+      properties:
+        status:
+          type: string
+        msg:
+          type: string
+
+    DownloadInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        status:
+          type: string
+        filename:
+          type: string
+        size:
+          type: integer
+
+    DownloadList:
+      type: object
+      properties:
+        queue:
+          type: array
+          items:
+            $ref: '#/components/schemas/DownloadInfo'
+        pending:
+          type: array
+          items:
+            $ref: '#/components/schemas/DownloadInfo'
+        done:
+          type: array
+          items:
+            $ref: '#/components/schemas/DownloadInfo'
+
+    AudioPreset:
+      type: object
+      properties:
+        name:
+          type: string
+        bitrate_kbps:
+          type: integer
+        description:
+          type: string
+
+    VideoPreset:
+      type: object
+      properties:
+        name:
+          type: string
+        resolution:
+          type: string
+        description:
+          type: string
+
+    SubscriptionCreate:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+        check_interval_minutes:
+          type: integer
+
+    Metadata:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    SearchResults:
+      type: object
+      properties:
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DownloadInfo'
+
+    JobStatus:
+      type: object
+      properties:
+        job_id:
+          type: string
+        status:
+          type: string
