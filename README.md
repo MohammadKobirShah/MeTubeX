@@ -26,7 +26,7 @@ docker run -d \
   -p 8081:8081 \
   -v /path/to/downloads:/downloads \
   -e PUID=1000 -e PGID=1000 \
-  ghcr.io/kobirshah/metube-x:latest
+  ghcr.io/kobirshah/metubex:latest
 ```
 
 Docker Compose example
@@ -34,7 +34,7 @@ Docker Compose example
 ```yaml
 services:
   metube-x:
-    image: ghcr.io/kobirshah/metube-x:latest
+    image: ghcr.io/kobirshah/metubex:latest
     container_name: metube-x
     restart: unless-stopped
     ports:
