@@ -28,7 +28,9 @@ RUN sed -i 's/\r$//g' docker-entrypoint.sh && \
       tini \
       build-essential && \
     curl -LsSf https://astral.sh/uv/install.sh | UV_INSTALL_DIR=/usr/local/bin sh && \
-    UV_PROJECT_ENVIRONMENT=/usr/local uv sync --frozen --no-dev --compile-bytecode && \
+    # During image builds allow lockfile discrepancies by syncing without --frozen.
+    # Developers should run `uv lock` locally to update `uv.lock` and then rebuild.
+    UV_PROJECT_ENVIRONMENT=/usr/local uv sync --no-dev --compile-bytecode && \
     uv cache clean && \
     rm -f /usr/local/bin/uv /usr/local/bin/uvx /usr/local/bin/uvw && \
     curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh -s -- -y && \
