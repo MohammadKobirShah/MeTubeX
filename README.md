@@ -10,7 +10,7 @@
 
 <br><br>
 
-[![Build Status](https://github.com/MohammadKobirShah/MeTubeX/actions/workflows/main.yml/badge.svg)](https://github.com/MohammadKobirShah/MeTubeX/actions/workflows/main.yml)
+[![Build Status](https://github.com/MohammadKobirShah/MeTubeX/actions/workflows/main.yml/badge.svg)](https://github.com/MohammadKobirShah/MeTubeX/actions/workflows/docker-publish.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/mohammadkobirshah/metubex?logo=docker&style=flat)](https://hub.docker.com/r/mohammadkobirshah/metubex)
 [![Python Version](https://img.shields.io/badge/python-3.13+-3776AB?logo=python&style=flat)](https://www.python.org/)
 [![Angular Version](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&style=flat)](https://angular.io/)
